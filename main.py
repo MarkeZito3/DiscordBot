@@ -1,7 +1,7 @@
 # Author: Marcos Pereyra
 # Github: MarkeZito3
 
-from datetime import datetime
+
 import os
 from tracemalloc import start
 import discord
@@ -76,10 +76,29 @@ async def avatar(ctx):
     embed.set_footer(text=FOOTER_MSG, icon_url=ICON_URL)
     await ctx.send(embed=embed)
 
-# Try to make a translate command from the DeepL API:
-@bot.command(name="deepl", description="Translator of DeepL")
-async def deepl(ctx):
-    pass
+##################################################################
+
+@bot.command(name="random", description="Fetch a random value from a list")
+async def rand(ctx, *args):
+    
+    # Setup
+    random_args_from_random = random.choice(args)
+    random_args_from_random = random_args_from_random.replace(",","")
+
+    embed = discord.Embed(title='Random Choice', description=f'{ctx.author.name} generate a random choice', color=0x00ff00)
+    embed.add_field(name='and the winner is....', value=f'||{random_args_from_random}||', inline=False)
+    embed.set_image(url="https://cdn.dribbble.com/users/6059148/screenshots/14425859/media/3f67e0e620f3818a68a03fdb874b7a56.gif")
+    embed.set_footer(text=FOOTER_MSG, icon_url=ICON_URL)
+    await ctx.send(embed=embed)
+    print("random function works :D")
+##################################################################
+
+# @bot.command(name="secret_msg", description="You'll watch a secret message 🤫")
+# async def secret(ctx):
+#     embed = discord.Embed(title='Secret Message', description=f'{ctx.author.name} has revealed the secret message', color=0x00ff00)
+#     embed.set_image(file=discord.File("./Sin título-2.png"))
+#     embed.set_footer(text=FOOTER_MSG, icon_url=ICON_URL)
+#     await ctx.send(embed=embed)
 
 # this event start when the script is executed
 @bot.event
