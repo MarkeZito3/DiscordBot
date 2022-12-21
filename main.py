@@ -8,6 +8,8 @@ import discord
 import random
 from discord.ext import commands
 from dotenv import load_dotenv # Create a .env file
+from urllib import parse, request
+import re #regular expression 
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN') #put here the discord token, duh
@@ -76,7 +78,6 @@ async def avatar(ctx):
     embed.set_footer(text=FOOTER_MSG, icon_url=ICON_URL)
     await ctx.send(embed=embed)
 
-##################################################################
 
 @bot.command(name="random", description="Fetch a random value from a list")
 async def rand(ctx, *args):
@@ -91,14 +92,22 @@ async def rand(ctx, *args):
     embed.set_footer(text=FOOTER_MSG, icon_url=ICON_URL)
     await ctx.send(embed=embed)
     print("random function works :D")
-##################################################################
 
+##################################################################
 # @bot.command(name="secret_msg", description="You'll watch a secret message 🤫")
 # async def secret(ctx):
 #     embed = discord.Embed(title='Secret Message', description=f'{ctx.author.name} has revealed the secret message', color=0x00ff00)
 #     embed.set_image(file=discord.File("./Sin título-2.png"))
 #     embed.set_footer(text=FOOTER_MSG, icon_url=ICON_URL)
 #     await ctx.send(embed=embed)
+##################################################################
+
+@bot.command(name="youtube",description="This command fetch the first youtube search")
+async def youtube(ctx, *,search):
+    query_search = parse.urlencode({'search_query': search})
+    html_search = request.urlopen('http://www.youtube.com/results?'+query_search)
+    id_search = re.findall('\\/watch\\?v=(.{11})', html_search.read().decode()) # when the request fetch responses only extract the video ID
+    await ctx.send('https://www.youtube.com/watch?v='+id_search[0])
 
 # this event start when the script is executed
 @bot.event
